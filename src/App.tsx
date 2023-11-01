@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+
+import "./App.css";
+
+import { wordsList } from "./data/word";
+import StartScreen from "./components/StartScreen/StartScreen";
+import Game from "./components/Game/Game";
+import GameOver from "./components/GameOver/GameOver";
+
+const stages = [
+  { id: 1, name: "start" },
+  { id: 2, name: "game" },
+  { id: 3, name: "end" },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [gameStage, setGameStage] = useState(stages[0].name);
+  const [words] = useState(wordsList);
+  console.log(words);
+
+  const startGame = () => {
+    setGameStage(stages[1].name);
+  };
+
+  const verifyLetter = () => {
+    setGameStage(stages[2].name);
+  };
+
+  const retry = () => {
+    setGameStage(stages[0].name);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="App">
+        {gameStage === "start" && <StartScreen startGame={startGame} />}
+        {gameStage === "game" && <Game verifyLetter={verifyLetter} />}
+        {gameStage === "end" && <GameOver retry={retry} />}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
