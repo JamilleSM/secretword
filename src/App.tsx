@@ -7,18 +7,50 @@ import StartScreen from "./components/StartScreen/StartScreen";
 import Game from "./components/Game/Game";
 import GameOver from "./components/GameOver/GameOver";
 
-const stages = [
+interface Stage {
+  id: number;
+  name: string;
+}
+
+const stages: Stage[] = [
   { id: 1, name: "start" },
   { id: 2, name: "game" },
   { id: 3, name: "end" },
 ];
 
 function App() {
-  const [gameStage, setGameStage] = useState(stages[0].name);
-  const [words] = useState(wordsList);
-  console.log(words);
+  const [gameStage, setGameStage] = useState<string>(stages[0].name);
+  const [words] = useState<{ [key: string]: string[] }>(wordsList);
+
+  const [pickedWord, setPickedWord] = useState<string>("");
+  const [pickedCategory, setPickedCategory] = useState<string>("");
+  const [letters, setLetters] = useState<string[]>([]);
+
+  const pickedWordAndCategory = () => {
+    const categories = Object.keys(words);
+    const category =
+      categories[Math.floor(Math.random() * Object.keys(categories).length)];
+
+    const word =
+      words[category][Math.floor(Math.random() * words[category].length)];
+
+    return { word, category };
+  };
 
   const startGame = () => {
+    const { word, category } = pickedWordAndCategory();
+
+    let wordLetters = word.split("");
+
+    wordLetters = wordLetters.map((l) => l.toLowerCase());
+
+    console.log(category, word);
+    console.log(wordLetters);
+
+    setPickedWord(word);
+    setPickedCategory(category);
+    setLetters(letters);
+
     setGameStage(stages[1].name);
   };
 
