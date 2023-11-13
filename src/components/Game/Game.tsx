@@ -14,7 +14,6 @@ interface GameProps {
 
 function Game({
   verifyLetter,
-  pickedWord,
   pickedCategory,
   letters,
   guessedLetters,
